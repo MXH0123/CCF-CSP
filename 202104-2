@@ -1,0 +1,46 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+#define max(a,b) (((a)>(b))?(a):(b))
+#define min(a,b) (((a)<(b))?(a):(b))
+
+int n, l, r, t;
+int arr[605][605], sums[605][605];
+
+int main()
+{
+    scanf("%d %d %d %d", &n, &l, &r, &t);
+    for(int i=0; i<n; i++)
+    {
+        for(int j=0; j<n; j++)
+        {
+            scanf("%d", &arr[i][j]);
+        }
+    }
+    for(int i=0; i<n; i++)
+    {
+        for(int j=0; j<n; j++)
+        {
+            sums[i+1][j+1] = sums[i][j+1] + sums[i+1][j] -sums[i][j] + arr[i][j];
+        }
+    }
+    int res = 0;
+    for(int i=0; i<n; i++)
+    {
+        for(int j=0; j<n; j++)
+        {
+            int max_i = min(n-1, i+r);
+            int max_j = min(n-1, j+r);
+            int min_i = max(0, i-r);
+            int min_j = max(0, j-r);
+            int sum = sums[max_i+1][max_j+1] - sums[min_i][max_j+1] - sums[max_i+1][min_j] + sums[min_i][min_j];
+            int cnt = (max_i-min_i+1)*(max_j-min_j+1);
+            if(cnt*t*1.0 >= sum*1.0)
+            {
+                res++;
+            }
+        }
+    }        
+    printf("%d\n", res);
+    return 0;
+}
